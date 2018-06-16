@@ -95,6 +95,27 @@ class Dominio (val variables : List[Variable]) {
     val nuevasVariables = (variables ++ nuevoDominio.variables).distinct
     Dominio(nuevasVariables)
   }
+
+  /**
+    * Sobrecarga del operador - para eliminar una variable del dominio
+    * @param variableEliminada Variable que se quiere eliminar del dominio
+    * @return Nuevo dominio sin la variable a eliminar
+    */
+  def - (variableEliminada : Variable) : Dominio = {
+    if (!variables.contains(variableEliminada)) this
+    else Dominio(variables.filter(variable => variable != variableEliminada))
+  }
+
+  /**
+    *
+    * @param nuevoDominio
+    * @return
+    */
+  def - (nuevoDominio : Dominio) : Dominio = {
+    val nuevasVariables = variables diff nuevoDominio.variables
+    Dominio(nuevasVariables)
+  }
+
 }
 
 object Dominio {

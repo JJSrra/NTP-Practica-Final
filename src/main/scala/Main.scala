@@ -33,9 +33,17 @@ object Main extends App {
 
   // Se crea un dominio sobre X1, X2, X5 y X6
   val X6 = new Variable("X6", 3)
-  val dominioNoVacio2 = new Dominio(List(X1, X2, X5, X6))
+  val dominioNoVacio2 = Dominio(List(X1, X2, X5, X6))
 
   // Se genera ahora la suma de los dos dominios no vacíos
   val dominioSuma2 = dominioNoVacio + dominioNoVacio2
   println("Suma de dominios: " + dominioSuma2)
+
+  // Se resta el elemento X2 al dominio anterior
+  val dominioSinX2 = dominioSuma2 - X2
+  println("Dominio anterior sin X2: " + dominioSinX2)
+
+  // Se resta el dominioNoVacio2
+  val dominioResta = dominioSinX2 - dominioNoVacio2
+  println("Dominio anterior menos (X1,X2,X5,X6): " + dominioResta)
 }
