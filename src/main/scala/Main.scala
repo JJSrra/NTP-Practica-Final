@@ -1,13 +1,20 @@
 object Main extends App {
 
-  val x1 = Variable("X1", 5)
-  val x2 = Variable("X2", 4)
-  val x3 = Variable("X3", 3)
+  // Se crea dominio vacío
+  val dominioVacio = Dominio(List())
 
-  val dom = new Dominio(List(x1, x2, x3))
-  val indice = dom.indiceVariables(x3)
-  println(indice)
+  // Se comprueba que funciona el metodo asociado a comprobar la condición de dominio vacío
+  println("Comprobación de vacío sobre dominio vacío: " + dominioVacio.vacio)
 
-  val pesos = dom.pesosVariables
-  println(pesos)
+  // Se crean 4 variables
+  val X1 = Variable("X1",3)
+  val X2 = Variable("X2",4)
+  val X3 = Variable("X3",2)
+  val X4 = Variable("X4",2)
+
+  // Se crea un dominio con las variables creadas antes
+  val dominioNoVacio=Dominio(List(X1,X2,X3,X4))
+
+  // Este dominio ya no esta vacío
+  println("Comprobación de vacío sobre dominio no vacío: " + dominioNoVacio.vacio)
 }

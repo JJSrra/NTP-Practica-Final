@@ -24,7 +24,8 @@ class Dominio (val variables : List[Variable]) {
       }
     }
 
-    go(0)
+    if (variables.length != 0)
+      go(0)
 
     return listaPesos
   }
@@ -33,4 +34,21 @@ class Dominio (val variables : List[Variable]) {
     * Dato miembro que almacena pares variable - peso en un mapa
     */
   val pesosVariables = (variables zip calcularPesos).toMap
+
+  /**
+    * Método para comprobar si el dominio está vacío
+    * @return True si el dominio está vacío, false en caso contrario
+    */
+  def vacio : Boolean = variables.isEmpty
+}
+
+object Dominio {
+  /**
+    * Método para obtener un objeto Dominio sin utilizar la palabra reservada new
+    * @param variables Lista de variables que compondrán el dominio
+    * @return Nuevo objeto Dominio
+    */
+  def apply(variables : List[Variable]) : Dominio = {
+    new Dominio(variables)
+  }
 }
