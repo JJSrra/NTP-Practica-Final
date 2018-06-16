@@ -68,6 +68,23 @@ class Dominio (val variables : List[Variable]) {
     if (indice >= longitud || indice < 0) null
     else variables(indice)
   }
+
+  /**
+    * Override del método toString para imprimir el dominio
+    * @return String explicativo del dominio
+    */
+  override def toString = variables.map(variable => variable.nombre + "(s: " + variable.numEstados
+      + " w: " + pesosVariables(variable) + ")") mkString " "
+
+  /**
+    * Sobrecarga del operador + para añadir una nueva variable al dominio
+    * @param nuevaVariable Nueva variable a añadir al dominio
+    * @return Nuevo dominio que contiene la variable
+    */
+  def + (nuevaVariable : Variable) : Dominio = {
+    if (variables.contains(nuevaVariable)) this
+    else Dominio(variables :+ nuevaVariable)
+  }
 }
 
 object Dominio {

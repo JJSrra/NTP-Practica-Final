@@ -17,4 +17,17 @@ object Main extends App {
 
   // Este dominio ya no esta vacío
   println("Comprobación de vacío sobre dominio no vacío: " + dominioNoVacio.vacio)
+
+  // Se obtiene la longitud del dominio
+  val longitud=dominioNoVacio.longitud
+  println("Longitud del dominio no vacío (debe ser 4): " + longitud)
+
+  // Se muestra el objeto usando toString
+  println(dominioNoVacio)
+
+  // Se suma una variable al dominioNoVacio
+  val X5 = new Variable("X5",5)
+  val dominioSuma = dominioNoVacio + X5
+
+  println("Dominio suma (+X5): " + dominioSuma)
 }
