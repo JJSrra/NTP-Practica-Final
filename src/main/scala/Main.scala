@@ -1,4 +1,4 @@
-import Variable.Variable
+import Variable._
 
 object Main extends App {
 
