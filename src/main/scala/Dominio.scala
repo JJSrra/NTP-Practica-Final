@@ -40,6 +40,34 @@ class Dominio (val variables : List[Variable]) {
     * @return True si el dominio está vacío, false en caso contrario
     */
   def vacio : Boolean = variables.isEmpty
+
+  /**
+    * Método para obtener el número de variables del dominio
+    * @return Longitud de la lista de variables asociada al dominio
+    */
+  def longitud : Int = variables.length
+
+  /**
+    * Método para obtener el vector de pesos de las variables del dominio
+    * @return Lista de pesos de las variables del dominio
+    */
+  def pesos : List[Int] = pesosVariables.values.toList
+
+  /**
+    * Método para obtener una unidad más que el máximo índice que se puede utilizar en este dominio
+    * @return Máximo índice como producto del peso máximo por el número de estados de la mayor variable
+    */
+  def maximoIndice : Int = pesosVariables(variables(0)) * variables(0).numEstados
+
+  /**
+    * Método de acceso a la variable que ocupa una posición
+    * @param indice Posición a acceder
+    * @return Variable en la posición índice, null si la posición no existe
+    */
+  def apply (indice : Int) : Variable = {
+    if (indice >= longitud || indice < 0) null
+    else variables(indice)
+  }
 }
 
 object Dominio {
