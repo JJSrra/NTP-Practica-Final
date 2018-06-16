@@ -107,9 +107,9 @@ class Dominio (val variables : List[Variable]) {
   }
 
   /**
-    *
-    * @param nuevoDominio
-    * @return
+    * Sobrecarga del operador - para hacer la resta entre dominios
+    * @param nuevoDominio Dominio a restar
+    * @return Nuevo dominio sin las variables del dominio restado
     */
   def - (nuevoDominio : Dominio) : Dominio = {
     val nuevasVariables = variables diff nuevoDominio.variables
