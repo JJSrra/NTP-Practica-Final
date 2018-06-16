@@ -85,6 +85,16 @@ class Dominio (val variables : List[Variable]) {
     if (variables.contains(nuevaVariable)) this
     else Dominio(variables :+ nuevaVariable)
   }
+
+  /**
+    * Sobrecarga del operador + para hacer la suma de dos dominios
+    * @param nuevoDominio Nuevo dominio cuyas variables añadir al dominio
+    * @return Nuevo dominio que contiene las variables de ambos
+    */
+  def + (nuevoDominio : Dominio) : Dominio = {
+    val nuevasVariables = (variables ++ nuevoDominio.variables).distinct
+    Dominio(nuevasVariables)
+  }
 }
 
 object Dominio {
