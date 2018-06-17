@@ -18,4 +18,16 @@ class Asignacion (val dominio : Dominio, val valores : List[Int]) {
       }.toMap
     }
   }
+
+  /**
+    * Método para comprobar si la asignación está construida sobre un dominio vacío
+    * @return True si el dominio está vacío, false en caso contrario
+    */
+  def vacia : Boolean = dominio.vacio
+}
+
+object Asignacion {
+  def apply(dominio : Dominio, valores : List[Int]) : Asignacion = {
+    new Asignacion(dominio, valores)
+  }
 }

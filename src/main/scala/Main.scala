@@ -1,5 +1,6 @@
 object Main extends App {
 
+  println("\t\t\tDOMINIO")
   // Se crea dominio vacío
   val dominioVacio = Dominio(List())
 
@@ -53,7 +54,9 @@ object Main extends App {
 
   println("========================================================================")
 
-  // Prueba de datos de Asignación
-  val asignacion1 = new Asignacion(dominioResta, List(1,0))
-  println(asignacion1.datos)
+  println("\t\t\tASIGNACIÓN")
+
+  // Se crea asignación vacía y se comprueba su chequeo
+  val asignacionVacia = Asignacion(Dominio(List()), List())
+  println("Comprobación vacío asignación vacía: " + asignacionVacia.vacia)
 }
