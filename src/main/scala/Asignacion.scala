@@ -33,6 +33,21 @@ class Asignacion (val dominio : Dominio, val valores : List[Int]) {
     if (datos == null) "Asignación vacía"
     else datos.map { case (variable, valor) => "[" + variable.nombre + " - " + valor + "]" } mkString " "
   }
+
+  /**
+    * Método para devolver el número de variables del dominio
+    * @return Longitud del dominio
+    */
+  def obtenerNumeroVariables : Int = dominio.longitud
+
+  /**
+    * Método para devolver el valor asociado a una variable
+    * @param variable Variable de la que se quiere comprobar el valor
+    * @return Valor en caso de que exista la variable, -1 en caso contrario
+    */
+  def obtenerValorVariable(variable : Variable) = datos.getOrElse(variable, null)
+
+  def + (nuevaVariable : Variable, nuevoValor : Int) = Asignacion(dominio+nuevaVariable, valores:+nuevoValor)
 }
 
 object Asignacion {
