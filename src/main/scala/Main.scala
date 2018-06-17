@@ -80,4 +80,14 @@ object Main extends App {
   // Proyectar X2 y X6 sobre la asignación anterior
   val asignacionProyectada = asignacion2.proyectar(Dominio(List(X2,X6)))
   println("Asignación anterior proyectada sobre X2 y X6: " + asignacionProyectada)
+
+  // Crear una asignación nueva solamente con un dominio
+  val asignacion0 = Asignacion(Dominio(List(X1,X3,X5)))
+  println("Asignacion solamente con dominio: " + asignacion0)
+
+  // A partir del índice obtenemos la asignación
+  val asignacionDeIndice = Asignacion(asignacion1.dominio, indice1)
+
+  // Se muestra la asignación obtenida: debe ser X1=2, X2=3, X3=1, X4=0
+  println("Asignación obtenida a partir de índice: " + asignacionDeIndice)
 }

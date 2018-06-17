@@ -87,4 +87,24 @@ object Asignacion {
   def apply(dominio : Dominio, valores : List[Int]) : Asignacion = {
     new Asignacion(dominio, valores)
   }
+
+  /**
+    * Método para crear un objeto Asignación solamente usando un dominio
+    * @param dominio Dominio sobre el que construir la asignación
+    * @return Nuevo objeto Asignación con todos los valores a 0
+    */
+  def apply(dominio : Dominio) : Asignacion = {
+    new Asignacion(dominio, List.fill(dominio.longitud)(0))
+  }
+
+  /**
+    * Método para crear un objeto Asignacion usando un dominio y un índice determinado
+    * @param dominio Dominio sobre el que construir la asignación
+    * @param indice Índice identificador de la asignación
+    * @return Asignación con los valores calculados en función de dichos dominio e índice
+    */
+  def apply(dominio: Dominio, indice : Int) : Asignacion = {
+    new Asignacion(dominio, dominio.variables.map(variable =>
+      (indice / dominio.pesosVariables(variable)) % variable.numEstados))
+  }
 }
