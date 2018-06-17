@@ -47,7 +47,16 @@ class Asignacion (val dominio : Dominio, val valores : List[Int]) {
     */
   def obtenerValorVariable(variable : Variable) = datos.getOrElse(variable, null)
 
-  def + (nuevaVariable : Variable, nuevoValor : Int) = Asignacion(dominio+nuevaVariable, valores:+nuevoValor)
+  /**
+    * Sobrecarga del operador + para añadir un nuevo par variable - valor
+    * @param nuevaVariable Nueva variable a añadir
+    * @param nuevoValor Nuevo valor a asignar a la variable
+    * @return Nueva asignación con el par anterior añadido
+    */
+  def + (nuevaVariable : Variable, nuevoValor : Int) = {
+    if (dominio.variables.contains(nuevaVariable)) this
+    else Asignacion(dominio+nuevaVariable, valores:+nuevoValor)
+  }
 }
 
 object Asignacion {
