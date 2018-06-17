@@ -59,4 +59,9 @@ object Main extends App {
   // Se crea asignación vacía y se comprueba su chequeo
   val asignacionVacia = Asignacion(Dominio(List()), List())
   println("Comprobación vacío asignación vacía: " + asignacionVacia.vacia)
+
+  // Se crea asignación, dando valores 2, 3, 1 y 0 a las variables
+  val asignacion1 = Asignacion(Dominio(List(X1, X2, X3, X4)), List(2,3,1,0))
+  println("Comprobación vacío sobre asignación no vacía: " + asignacion1.vacia)
+  println("Se muestra la asignación: " + asignacion1)
 }

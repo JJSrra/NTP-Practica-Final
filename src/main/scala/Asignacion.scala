@@ -24,9 +24,24 @@ class Asignacion (val dominio : Dominio, val valores : List[Int]) {
     * @return True si el dominio está vacío, false en caso contrario
     */
   def vacia : Boolean = dominio.vacio
+
+  /**
+    * Override del método toString para imprimir la asignación
+    * @return String explicativo de la asignación
+    */
+  override def toString = {
+    if (datos == null) "Asignación vacía"
+    else datos.map { case (variable, valor) => "[" + variable.nombre + " - " + valor + "]" } mkString " "
+  }
 }
 
 object Asignacion {
+  /**
+    * Método para obtener un objeto Asignación sin utilizar la palabra reservada new
+    * @param dominio El dominio sobre el que construir la asignación
+    * @param valores Los valores que asociar a las variables del dominio
+    * @return Nuevo objeto Asignación
+    */
   def apply(dominio : Dominio, valores : List[Int]) : Asignacion = {
     new Asignacion(dominio, valores)
   }
