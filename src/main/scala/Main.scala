@@ -46,4 +46,14 @@ object Main extends App {
   // Se resta el dominioNoVacio2
   val dominioResta = dominioSinX2 - dominioNoVacio2
   println("Dominio anterior menos (X1,X2,X5,X6): " + dominioResta)
+
+  // Prueba de cálculo del máximo índice
+  val maximoIndice = dominioSuma2.maximoIndice
+  println("Máximo índice de dominio de suma: " + maximoIndice)
+
+  println("========================================================================")
+
+  // Prueba de datos de Asignación
+  val asignacion1 = new Asignacion(dominioResta, List(1,0))
+  println(asignacion1.datos)
 }
