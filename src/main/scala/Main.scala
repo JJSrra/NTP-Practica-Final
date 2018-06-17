@@ -64,4 +64,13 @@ object Main extends App {
   val asignacion1 = Asignacion(Dominio(List(X1, X2, X3, X4)), List(2,3,1,0))
   println("Comprobación vacío sobre asignación no vacía: " + asignacion1.vacia)
   println("Se muestra la asignación: " + asignacion1)
+
+  // Se comprueba el valor de la variable X2 en la asignación anterior
+  val valorVariableX2 = asignacion1.obtenerValorVariable(X2)
+  println("Comprobación de valor de X2: " + valorVariableX2)
+
+  // Se añade el par X6 - 0 a la asignación anterior
+  val asignacion2 = asignacion1 + (X6,0)
+  println("Asignación anterior sumándole X6 con valor 0: " + asignacion2)
+
 }
