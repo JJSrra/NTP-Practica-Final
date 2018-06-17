@@ -57,6 +57,24 @@ class Asignacion (val dominio : Dominio, val valores : List[Int]) {
     if (dominio.variables.contains(nuevaVariable)) this
     else Asignacion(dominio+nuevaVariable, valores:+nuevoValor)
   }
+
+  /**
+    * Método para calcular el índice asociado a una asignación
+    * @return Índice asociado a la asignación
+    */
+  def calcularIndice : Int = (dominio.pesos zip valores).map{ case(peso,valor) => peso * valor}.sum
+
+  /**
+    * Método para calcular una nueva asignación proyectada sobre un dominio,
+    * es decir, sólo con las variables que ya tiene y que aparecen en el nuevo dominio
+    * @param dominioProyectar Dominio sobre el que proyectar la asignación
+    * @return Nueva asignación proyectada sobre el dominio
+    */
+  def proyectar (dominioProyectar : Dominio) : Asignacion = {
+    val nuevoDominio = dominio.variables.intersect(dominioProyectar.variables)
+    val nuevosValores = nuevoDominio.map(variable => datos(variable))
+    Asignacion(Dominio(nuevoDominio), nuevosValores)
+  }
 }
 
 object Asignacion {

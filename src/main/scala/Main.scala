@@ -73,4 +73,11 @@ object Main extends App {
   val asignacion2 = asignacion1 + (X6,0)
   println("Asignación anterior sumándole X6 con valor 0: " + asignacion2)
 
+  // Cálculo del índice asociado a la asignación (debe ser 46)
+  val indice1 = asignacion1.calcularIndice
+  println("indice1 (debe ser 46): " + indice1)
+
+  // Proyectar X2 y X6 sobre la asignación anterior
+  val asignacionProyectada = asignacion2.proyectar(Dominio(List(X2,X6)))
+  println("Asignación anterior proyectada sobre X2 y X6: " + asignacionProyectada)
 }
