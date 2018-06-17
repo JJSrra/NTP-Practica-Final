@@ -104,7 +104,8 @@ object Asignacion {
     * @return Asignación con los valores calculados en función de dichos dominio e índice
     */
   def apply(dominio: Dominio, indice : Int) : Asignacion = {
-    new Asignacion(dominio, dominio.variables.map(variable =>
+    if (indice >= dominio.maximoIndice) null
+    else new Asignacion(dominio, dominio.variables.map(variable =>
       (indice / dominio.pesosVariables(variable)) % variable.numEstados))
   }
 }
