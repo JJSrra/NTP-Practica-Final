@@ -1,6 +1,6 @@
 object Main extends App {
 
-  println("\t\t\tDOMINIO")
+  println("\t\t\t\t\tDOMINIO")
   // Se crea dominio vacío
   val dominioVacio = Dominio(List())
 
@@ -54,7 +54,7 @@ object Main extends App {
 
   println("========================================================================")
 
-  println("\t\t\tASIGNACIÓN")
+  println("\t\t\t\t\tASIGNACIÓN")
 
   // Se crea asignación vacía y se comprueba su chequeo
   val asignacionVacia = Asignacion(Dominio(List()), List())
@@ -90,4 +90,12 @@ object Main extends App {
 
   // Se muestra la asignación obtenida: debe ser X1=2, X2=3, X3=1, X4=0
   println("Asignación obtenida a partir de índice: " + asignacionDeIndice)
+
+  println("========================================================================")
+
+  println("\t\t\t\t\tVALORES ARRAY")
+
+  // Crear un objeto ValoresArray
+  val valoresArray1 = ValoresArray(Dominio(List(X3,X4)), List(0.2, 0.8, 0.6, 0.4))
+  println("Variables de ValoresArray: " + valoresArray1.obtenerVariables)
 }
