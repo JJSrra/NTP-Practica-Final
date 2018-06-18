@@ -98,4 +98,6 @@ object Main extends App {
   // Crear un objeto ValoresArray
   val valoresArray1 = ValoresArray(Dominio(List(X3,X4)), List(0.2, 0.8, 0.6, 0.4))
   println("Variables de ValoresArray: " + valoresArray1.obtenerVariables)
+
+  println("Imprimir el objeto ValoresArray anterior:\n" + valoresArray1)
 }
