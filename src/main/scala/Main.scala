@@ -110,4 +110,7 @@ object Main extends App {
 
   val valoresCombinado = valores1.combinar(valores2)
   println("Valores combinados:\n" + valoresCombinado)
+
+  val valoresRestringido = valoresCombinado.restringir(var1, 0)
+  println("Valores restringidos:\n" + valoresRestringido)
 }
