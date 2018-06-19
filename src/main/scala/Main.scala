@@ -132,6 +132,6 @@ object Main extends App {
   println("Árbol combinado:\n" + arbolCombinado)
 
   val arbol3 = ValoresArbol(Dominio(List(var1,var3)), List(0.1,0.1,1.0,0.0))
-  val arbolComb2 = arbol2.combinarArbolArbol(arbol3)
+  val arbolComb2 = arbol2.combinar(arbol3)
   println("Árbol combinado con nodos variable-variable:\n" + arbolComb2)
 }

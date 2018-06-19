@@ -136,20 +136,54 @@ object ValoresArray {
 }
 
 case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extends Valores (dominio) {
+  /**
+    * Método para obtener el valor de una asignación
+    * @param asignacion Asignación de la que obtener el valor
+    * @return Valor de dicha asignación
+    */
   override def obtenerValor(asignacion: Asignacion): Double = raiz.obtenerValor(asignacion, 0)
 
+  /**
+    * Método para obtener los valores asociados al objeto Valores
+    * @return Lista de valores
+    */
   override def obtenerValores: List[Double] = raiz.obtenerValores
 
+  /**
+    * Método toString para mostrar de forma gráfica el contenido del objeto
+    * @return String del objeto
+    */
   override def toString: String = raiz.toString(0)
 
+  /**
+    * Método para convertir un objeto ValoresArbol a un objeto ValoresArray
+    * @return ValoresArray si se ejecuta sobre un ValoresArbol, y viceversa
+    */
   override def convertir : ValoresArray = ValoresArray(dominio, obtenerValores)
 
+  /**
+    * Método para restringir un objeto ValoresArbol en torno a una variable y un estado
+    * @param variable Variable que se va a restringir
+    * @param estado Estado que toma dicha variable
+    * @return Objeto ValoresArbol restringido
+    */
   override def restringir (variable : Variable, estado : Int) : ValoresArbol = ValoresArbol(dominio, raiz.restringir(variable, estado))
 
+  /**
+    * Método auxiliar para combinar dos objetos ValoresArbol
+    * @param nuevoArbol Objeto ValoresArbol que combinar con this
+    * @return Nuevo objeto ValoresArbol
+    */
   def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = ValoresArbol(dominio, raiz.combinarArbolArbol(nuevoArbol.raiz))
 }
 
 object ValoresArbol {
+  /**
+    * Método apply para poder crear un objeto ValoresArbol mediante una lista de valores
+    * @param dominio Dominio sobre el que crear el objeto ValoresArbol
+    * @param valores Lista de valores asociada al objeto
+    * @return Nuevo objeto ValoresArbol
+    */
   def apply (dominio : Dominio, valores : List[Double]) : ValoresArbol = {
 
     def go (indice : Int, asignacion: Asignacion) : Nodo = {
@@ -179,31 +213,81 @@ object ValoresArbol {
 }
 
 abstract class Nodo {
+  /**
+    * Método para obtener el valor de un nodo
+    * @param asignacion Asignación asociada al valor
+    * @param numHijo Parámetro que indica el nivel de hijo en el que se encuentra la búsqueda
+    * @return Valor asociado a la asignación
+    */
   def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double
 
+  /**
+    * Método para obtener la lista de valores derivada de un nodo
+    * @return Lista de valores derivada del nodo
+    */
   def obtenerValores : List[Double]
 
+  /**
+    * Método toString
+    * @param tabs Nivel de profundidad para incluir tabuladores
+    * @return String ilustrativo del objeto
+    */
   def toString (tabs : Int) : String
 
+  /**
+    * Método para restringir los valores derivados de un nodo en función de una variable y un estado
+    * @param variableRest Variable a restringir
+    * @param estadoRest Estado a restringir
+    * @return Nuevo nodo asociado a los valores restringidos
+    */
   def restringir (variableRest : Variable, estadoRest : Int) : Nodo
 
+  /**
+    * Método para combinar dos objetos Árbol Árbol a nivel de nodo
+    * @param nuevaRaiz Nodo que combinar
+    * @return Nuevo nodo combinado de ambos
+    */
   def combinarArbolArbol (nuevaRaiz : Nodo) : Nodo
 }
 
 case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo {
-
+  /**
+    * Método para obtener el valor de un nodo
+    * @param asignacion Asignación asociada al valor
+    * @param numHijo Parámetro que indica el nivel de hijo en el que se encuentra la búsqueda
+    * @return Valor asociado a la asignación
+    */
   def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double =
     obtenerHijo(asignacion.valores(numHijo)).obtenerValor(asignacion, numHijo+1)
 
+  /**
+    * Método para obtener la lista de valores derivada de un nodo
+    * @return Lista de valores derivada del nodo
+    */
   def obtenerValores : List[Double] = {
     listaHijos.map(indice => indice.obtenerValores).reduce(_ ::: _)
   }
 
+  /**
+    * Método toString
+    * @param tabs Nivel de profundidad para incluir tabuladores
+    * @return String ilustrativo del objeto
+    */
   override def toString (tabs : Int) : String = listaHijos.indices.map(estado =>
     "\t"*tabs + nivel.nombre + " : " + estado + "\n" + obtenerHijo(estado).toString(tabs+1)) mkString "\n"
 
+  /**
+    * Método para obtener el nodo hijo asociado a un estado
+    * @param estado Estado de la variable
+    * @return Nodo hijo
+    */
   def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
 
+  /**
+    * Método para combinar dos objetos Árbol Árbol a nivel de nodo
+    * @param nuevaRaiz Nodo que combinar
+    * @return Nuevo nodo combinado de ambos
+    */
   def combinarArbolArbol(nuevaRaiz: Nodo): Nodo = {
     nuevaRaiz match {
       case nodoHoja:NodoHoja => {
@@ -217,6 +301,12 @@ case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo
     }
   }
 
+  /**
+    * Método para restringir los valores derivados de un nodo en función de una variable y un estado
+    * @param variableRest Variable a restringir
+    * @param estadoRest Estado a restringir
+    * @return Nuevo nodo asociado a los valores restringidos
+    */
   override def restringir(variableRest: Variable, estadoRest: Int): Nodo = {
     if (nivel == variableRest) obtenerHijo(estadoRest)
     else {
@@ -227,12 +317,32 @@ case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo
 }
 
 case class NodoHoja (valor : Double) extends Nodo {
+  /**
+    * Método para obtener el valor de un nodo
+    * @param asignacion Asignación asociada al valor
+    * @param numHijo Parámetro que indica el nivel de hijo en el que se encuentra la búsqueda
+    * @return Valor asociado a la asignación
+    */
   override def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double = valor
 
+  /**
+    * Método para obtener la lista de valores derivada de un nodo
+    * @return Lista de valores derivada del nodo
+    */
   override def obtenerValores : List[Double] = List(valor)
 
+  /**
+    * Método toString
+    * @param tabs Nivel de profundidad para incluir tabuladores
+    * @return String ilustrativo del objeto
+    */
   override def toString (tabs : Int) : String = "\t"*tabs + "= " + valor
 
+  /**
+    * Método para combinar dos objetos Árbol Árbol a nivel de nodo
+    * @param nuevaRaiz Nodo que combinar
+    * @return Nuevo nodo combinado de ambos
+    */
   def combinarArbolArbol(nuevaRaiz: Nodo): Nodo = {
     nuevaRaiz match {
       case nodoHoja:NodoHoja => {
@@ -244,5 +354,11 @@ case class NodoHoja (valor : Double) extends Nodo {
     }
   }
 
+  /**
+    * Método para restringir los valores derivados de un nodo en función de una variable y un estado
+    * @param variableRest Variable a restringir
+    * @param estadoRest Estado a restringir
+    * @return Nuevo nodo asociado a los valores restringidos
+    */
   override def restringir (variableRest : Variable, estadoRest : Int) : Nodo = this
 }
