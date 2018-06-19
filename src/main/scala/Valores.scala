@@ -144,7 +144,7 @@ case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extend
 
   override def convertir : ValoresArray = ValoresArray(dominio, obtenerValores)
 
-  override def restringir (variable : Variable, estado : Int) : ValoresArbol = ???
+  override def restringir (variable : Variable, estado : Int) : ValoresArbol = ValoresArbol(dominio, raiz.restringir(variable, estado))
 
   def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = raiz.combinarArbolArbol(nuevoArbol.raiz)
 }
@@ -185,6 +185,8 @@ abstract class Nodo {
   def toString (tabs : Int) : String
 
   def combinarArbolArbol (nuevaRaiz : Nodo) : ValoresArbol
+
+  def restringir (variableRest : Variable, estadoRest : Int) : Nodo
 }
 
 case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo {
@@ -201,7 +203,17 @@ case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo
 
   def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
 
-  override def combinarArbolArbol(nuevaRaiz: Nodo): ValoresArbol = ???
+  def combinarArbolArbol(nuevaRaiz: NodoHoja): ValoresArbol = ???
+
+  def combinarArbolArbol(nuevaRaiz: Nodo): ValoresArbol = ???
+
+  override def restringir(variableRest: Variable, estadoRest: Int): Nodo = {
+    if (nivel == variableRest) obtenerHijo(estadoRest)
+    else {
+      val hijos = listaHijos.indices.map(estado => obtenerHijo(estado).restringir(variableRest, estadoRest)).toList
+      NodoVariable(nivel, hijos)
+    }
+  }
 }
 
 case class NodoHoja (valor : Double) extends Nodo {
@@ -212,4 +224,6 @@ case class NodoHoja (valor : Double) extends Nodo {
   override def toString (tabs : Int) : String = "\t"*tabs + "= " + valor
 
   override def combinarArbolArbol(nuevaRaiz: Nodo): ValoresArbol = ???
+
+  override def restringir (variableRest : Variable, estadoRest : Int) : Nodo = this
 }

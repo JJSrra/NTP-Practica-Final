@@ -123,4 +123,7 @@ object Main extends App {
 
   val valorArbol1 = arbol1.obtenerValor(Asignacion(arbol1.dominio, List(1,1,0)))
   println("Valor para asignación (deber ser 0.4): " + valorArbol1)
+
+  val arbolRestringido = arbol1.restringir(var2, 0)
+  println("Árbol restringido:\n" + arbolRestringido)
 }
