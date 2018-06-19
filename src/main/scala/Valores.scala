@@ -51,6 +51,13 @@ abstract class Valores (val dominio : Dominio) {
     */
   def convertir : Valores
 
+  /**
+    * Método para restringir un objeto Valores con aquellas asignaciones donde una variable toma un estado
+    * @param variable Variable que se va a restringir
+    * @param estado Estado que toma dicha variable
+    * @return Objeto Valores restringido
+    */
+  def restringir (variable : Variable, estado : Int) : Valores
 }
 
 case class ValoresArray (override val dominio : Dominio, valores : List[Double]) extends Valores (dominio) {
@@ -97,6 +104,23 @@ case class ValoresArray (override val dominio : Dominio, valores : List[Double])
     * @return ValoresArray si se ejecuta sobre un ValoresArbol, y viceversa
     */
   override def convertir : ValoresArbol = ???
+
+  /**
+    * Método que restringe un objeto ValoresArray para las asignaciones donde una variable tiene un estado
+    * @param variable Variable a restringir
+    * @param estado Estado que tiene dicha variable
+    * @return Objeto ValoresArray restringido
+    */
+  override def restringir (variable : Variable, estado : Int) : ValoresArray = {
+    val dominioFinal = dominio - variable
+    val valoresFinal = (0 until dominioFinal.maximoIndice).map(indice => {
+      val asignacionFinal = Asignacion(dominioFinal, indice)
+      val asignacionCompleta = asignacionFinal + (variable, estado)
+      val asignacionOrdenada = asignacionCompleta.proyectar(dominioFinal)
+      obtenerValor(asignacionOrdenada)
+    }).toList
+    ValoresArray(dominioFinal, valoresFinal)
+  }
 }
 
 object ValoresArray {
@@ -120,5 +144,8 @@ case class ValoresArbol (override val dominio : Dominio) extends Valores (domini
 
   override def convertir : ValoresArray = ???
 
+  override def restringir (variable : Variable, estado : Int) : ValoresArbol = ???
+
   def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = ???
+
 }
