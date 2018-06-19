@@ -100,4 +100,14 @@ object Main extends App {
   println("Variables de ValoresArray: " + valoresArray1.obtenerVariables)
 
   println("Imprimir el objeto ValoresArray anterior:\n" + valoresArray1)
+
+  val var1 = Variable("X1",2)
+  val var2 = Variable("X2",2)
+  val var3 = Variable("X3",2)
+
+  val valores1 = ValoresArray(Dominio(List(var1,var2)), List(0.3, 0.7, 0.6, 0.4))
+  val valores2 = ValoresArray(Dominio(List(var2,var3)), List(0.9, 0.1, 1.0, 0.0))
+
+  val valoresCombinado = valores1.combinar(valores2)
+  println("Valores combinados:\n" + valoresCombinado)
 }
