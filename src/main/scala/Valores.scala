@@ -140,7 +140,7 @@ case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extend
 
   override def obtenerValores: List[Double] = raiz.obtenerValores
 
-  override def toString: String = raiz.toString
+  override def toString: String = raiz.toString(0)
 
   override def convertir : ValoresArray = ???
 
@@ -179,17 +179,17 @@ object ValoresArbol {
 
 abstract class Nodo {
   def obtenerValores : List[Double]
+
+  def toString (tabs : Int) : String
 }
 
-case class NodoVariable (nivel : Variable, hijos : List[Nodo]) extends Nodo {
+case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo {
   def obtenerValores : List[Double] = {
     listaHijos.map(indice => indice.obtenerValores).reduce(_ ::: _)
   }
 
-  val listaHijos : List[Nodo] = hijos
-
-  override def toString: String = listaHijos.indices.map(estado =>
-    nivel.nombre + " : " + estado + "\n" + obtenerHijo(estado).toString) mkString "\n"
+  override def toString (tabs : Int) : String = listaHijos.indices.map(estado =>
+    "\t"*tabs + nivel.nombre + " : " + estado + "\n" + obtenerHijo(estado).toString(tabs+1)) mkString "\n"
 
   def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
 }
@@ -197,5 +197,5 @@ case class NodoVariable (nivel : Variable, hijos : List[Nodo]) extends Nodo {
 case class NodoHoja (valor : Double) extends Nodo {
   override def obtenerValores : List[Double] = List(valor)
 
-  override def toString: String = "= " + valor
+  override def toString (tabs : Int) : String = "\t"*tabs + "= " + valor
 }
