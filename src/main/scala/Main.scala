@@ -120,4 +120,7 @@ object Main extends App {
 
   val arbol1 = ValoresArbol(Dominio(List(var1,var2,var3)), List(0.27, 0.03, 0.63, 0.07, 0.6, 0, 0.4, 0))
   println("Valores Arbol:\n" + arbol1)
+
+  val valorArbol1 = arbol1.obtenerValor(Asignacion(arbol1.dominio, List(1,1,0)))
+  println("Valor para asignación (deber ser 0.4): " + valorArbol1)
 }

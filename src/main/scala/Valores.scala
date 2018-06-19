@@ -136,7 +136,7 @@ object ValoresArray {
 }
 
 case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extends Valores (dominio) {
-  override def obtenerValor(asignacion: Asignacion): Double = ???
+  override def obtenerValor(asignacion: Asignacion): Double = raiz.obtenerValor(asignacion, 0)
 
   override def obtenerValores: List[Double] = raiz.obtenerValores
 
@@ -178,12 +178,18 @@ object ValoresArbol {
 }
 
 abstract class Nodo {
+  def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double
+
   def obtenerValores : List[Double]
 
   def toString (tabs : Int) : String
 }
 
 case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo {
+
+  def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double =
+    obtenerHijo(asignacion.valores(numHijo)).obtenerValor(asignacion, numHijo+1)
+
   def obtenerValores : List[Double] = {
     listaHijos.map(indice => indice.obtenerValores).reduce(_ ::: _)
   }
@@ -195,6 +201,8 @@ case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo
 }
 
 case class NodoHoja (valor : Double) extends Nodo {
+  override def obtenerValor (asignacion: Asignacion, numHijo : Int) : Double = valor
+
   override def obtenerValores : List[Double] = List(valor)
 
   override def toString (tabs : Int) : String = "\t"*tabs + "= " + valor
