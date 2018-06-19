@@ -126,4 +126,12 @@ object Main extends App {
 
   val arbolRestringido = arbol1.restringir(var2, 0)
   println("Árbol restringido:\n" + arbolRestringido)
+
+  val arbol2 = ValoresArbol(Dominio(List(var1,var2)), List(0.3,0.7,0.6,0.4))
+  val arbolCombinado = arbol2.combinarArbolArbol(ValoresArbol(Dominio(List()), List(0.3)))
+  println("Árbol combinado:\n" + arbolCombinado)
+
+  val arbol3 = ValoresArbol(Dominio(List(var1,var3)), List(0.1,0.1,1.0,0.0))
+  val arbolComb2 = arbol2.combinarArbolArbol(arbol3)
+  println("Árbol combinado con nodos variable-variable:\n" + arbolComb2)
 }
