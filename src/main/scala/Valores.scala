@@ -103,7 +103,7 @@ case class ValoresArray (override val dominio : Dominio, valores : List[Double])
     * Método para convertir objetos de tipo ValoresArray a ValoresArbol
     * @return ValoresArray si se ejecuta sobre un ValoresArbol, y viceversa
     */
-  override def convertir : ValoresArbol = ???
+  override def convertir : ValoresArbol = ValoresArbol(dominio, valores)
 
   /**
     * Método que restringe un objeto ValoresArray para las asignaciones donde una variable tiene un estado
@@ -142,11 +142,11 @@ case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extend
 
   override def toString: String = raiz.toString(0)
 
-  override def convertir : ValoresArray = ???
+  override def convertir : ValoresArray = ValoresArray(dominio, obtenerValores)
 
   override def restringir (variable : Variable, estado : Int) : ValoresArbol = ???
 
-  def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = ???
+  def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = raiz.combinarArbolArbol(nuevoArbol.raiz)
 }
 
 object ValoresArbol {
@@ -183,6 +183,8 @@ abstract class Nodo {
   def obtenerValores : List[Double]
 
   def toString (tabs : Int) : String
+
+  def combinarArbolArbol (nuevaRaiz : Nodo) : ValoresArbol
 }
 
 case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo {
@@ -198,6 +200,8 @@ case class NodoVariable (nivel : Variable, listaHijos : List[Nodo]) extends Nodo
     "\t"*tabs + nivel.nombre + " : " + estado + "\n" + obtenerHijo(estado).toString(tabs+1)) mkString "\n"
 
   def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
+
+  override def combinarArbolArbol(nuevaRaiz: Nodo): ValoresArbol = ???
 }
 
 case class NodoHoja (valor : Double) extends Nodo {
@@ -206,4 +210,6 @@ case class NodoHoja (valor : Double) extends Nodo {
   override def obtenerValores : List[Double] = List(valor)
 
   override def toString (tabs : Int) : String = "\t"*tabs + "= " + valor
+
+  override def combinarArbolArbol(nuevaRaiz: Nodo): ValoresArbol = ???
 }
