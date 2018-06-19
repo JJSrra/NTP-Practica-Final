@@ -135,7 +135,7 @@ object ValoresArray {
   }
 }
 
-case class ValoresArbol (override val dominio : Dominio) extends Valores (dominio) {
+case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extends Valores (dominio) {
   override def obtenerValor(asignacion: Asignacion): Double = ???
 
   override def obtenerValores: List[Double] = ???
@@ -147,5 +147,50 @@ case class ValoresArbol (override val dominio : Dominio) extends Valores (domini
   override def restringir (variable : Variable, estado : Int) : ValoresArbol = ???
 
   def combinarArbolArbol (nuevoArbol : ValoresArbol) : ValoresArbol = ???
+}
 
+object ValoresArbol {
+  def apply (dominio : Dominio, valores : List[Double]) : ValoresArbol = {
+
+    def go (indice : Int, asignacion: Asignacion) : Nodo = {
+      val variable = dominio.variables(indice)
+      val nodoVariable = new NodoVariable(variable)
+      if (indice < dominio.longitud-1) {
+        (0 until variable.numEstados).map(estado => nodoVariable.listaHijos :+
+          go(indice+1, asignacion + (variable, estado)))
+      }
+      else {
+        (0 until variable.numEstados).map(estado => {
+          val asignacionHoja = asignacion + (variable, estado)
+          val hoja = NodoHoja(valores(asignacionHoja.calcularIndice))
+          nodoVariable.listaHijos :+ hoja
+        })
+      }
+
+      nodoVariable
+    }
+
+    val nodoRaiz = go(0, Asignacion(Dominio(List())))
+    // Ahora se puede construir el objeto de tipo ValoresArbol
+
+    new ValoresArbol(dominio, nodoRaiz)
+  }
+}
+
+abstract class Nodo {
+  def obtenerValores : List[Double]
+}
+
+case class NodoVariable (val nivel : Variable) extends Nodo {
+  def obtenerValores : List[Double] = {
+    listaHijos.map(indice => indice.obtenerValores).reduce(_ ::: _)
+  }
+
+  def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
+
+  var listaHijos : List[Nodo] = List()
+}
+
+case class NodoHoja (val valor : Double) extends Nodo {
+  override def obtenerValores : List[Double] = List(valor)
 }
