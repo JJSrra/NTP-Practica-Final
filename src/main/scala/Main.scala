@@ -119,4 +119,5 @@ object Main extends App {
   println("\t\t\t\t\tVALORES ARBOL")
 
   val arbol1 = ValoresArbol(Dominio(List(var1,var2,var3)), List(0.27, 0.03, 0.63, 0.07, 0.6, 0, 0.4, 0))
+  println("Valores Arbol:\n" + arbol1.obtenerValores)
 }

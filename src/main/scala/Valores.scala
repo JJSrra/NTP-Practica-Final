@@ -138,9 +138,9 @@ object ValoresArray {
 case class ValoresArbol (override val dominio : Dominio, val raiz : Nodo) extends Valores (dominio) {
   override def obtenerValor(asignacion: Asignacion): Double = ???
 
-  override def obtenerValores: List[Double] = ???
+  override def obtenerValores: List[Double] = raiz.obtenerValores
 
-  override def toString: String = ???
+  override def toString: String = raiz.toString
 
   override def convertir : ValoresArray = ???
 
@@ -154,18 +154,18 @@ object ValoresArbol {
 
     def go (indice : Int, asignacion: Asignacion) : Nodo = {
       val variable = dominio.variables(indice)
-      val nodoVariable = new NodoVariable(variable)
+      var listaHijos : List[Nodo] = List()
       if (indice < dominio.longitud-1) {
-        (0 until variable.numEstados).map(estado => nodoVariable.listaHijos :+
-          go(indice+1, asignacion + (variable, estado)))
+        listaHijos = (0 until variable.numEstados).map(estado =>
+          go(indice+1, asignacion + (variable, estado))).toList
       }
       else {
-        (0 until variable.numEstados).map(estado => {
+        listaHijos = (0 until variable.numEstados).map(estado => {
           val asignacionHoja = asignacion + (variable, estado)
-          val hoja = NodoHoja(valores(asignacionHoja.calcularIndice))
-          nodoVariable.listaHijos :+ hoja
-        })
+          NodoHoja(valores(asignacionHoja.calcularIndice))
+        }).toList
       }
+      val nodoVariable = new NodoVariable(variable, listaHijos)
 
       nodoVariable
     }
@@ -181,16 +181,21 @@ abstract class Nodo {
   def obtenerValores : List[Double]
 }
 
-case class NodoVariable (val nivel : Variable) extends Nodo {
+case class NodoVariable (nivel : Variable, hijos : List[Nodo]) extends Nodo {
   def obtenerValores : List[Double] = {
     listaHijos.map(indice => indice.obtenerValores).reduce(_ ::: _)
   }
 
-  def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
+  val listaHijos : List[Nodo] = hijos
 
-  var listaHijos : List[Nodo] = List()
+  override def toString: String = listaHijos.indices.map(estado =>
+    nivel.nombre + " : " + estado + "\n" + obtenerHijo(estado).toString) mkString "\n"
+
+  def obtenerHijo (estado : Int) : Nodo = listaHijos(estado)
 }
 
-case class NodoHoja (val valor : Double) extends Nodo {
+case class NodoHoja (valor : Double) extends Nodo {
   override def obtenerValores : List[Double] = List(valor)
+
+  override def toString: String = "= " + valor
 }
