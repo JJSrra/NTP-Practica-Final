@@ -24,10 +24,7 @@ class Dominio (val variables : List[Variable]) {
       }
     }
 
-    if (variables.length != 0)
-      go(0)
-
-    return listaPesos
+    variables.length != 0 ? go(0) : return listaPesos
   }
 
   /**
